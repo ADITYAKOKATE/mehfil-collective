@@ -98,7 +98,7 @@ const SiteSettingsSchema: Schema<ISiteSettings> = new Schema(
     contactLocation: { type: String, default: "Mumbai, Maharashtra, India" },
     instagramUrl: { type: String, default: "https://instagram.com/mehfilcollective" },
     youtubeUrl: { type: String, default: "https://youtube.com/@mehfilcollective" },
-    whatsappNumber: { type: String, default: "+919876543210" },
+    whatsappNumber: { type: String, default: "+919372433632" },
 
     // Brand
     siteTagline: { type: String, default: "Where Music Meets People." },
