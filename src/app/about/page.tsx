@@ -1,18 +1,18 @@
-"use client";
-
 import Link from "next/link";
+import { getSiteSettings } from "@/lib/settings";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "About | Mehfil Collective",
+  description: "Learn about Mehfil Collective — our story, philosophy and the team behind the experiences.",
+};
 
-const services = [
-  { icon: "🎵", title: "Live Event Production", desc: "End-to-end planning and execution of live entertainment experiences — from intimate gatherings to large-scale productions." },
-  { icon: "🎤", title: "Artist Management", desc: "Artist booking, coordination and growth management, ensuring every performance is delivered with excellence." },
-  { icon: "✨", title: "Event Curation", desc: "Concept development and programming for events that are unique, memorable and deeply resonant." },
-  { icon: "🏢", title: "Corporate Events", desc: "Premium entertainment solutions for corporate gatherings, award nights and private functions." },
-  { icon: "🤝", title: "Brand Collaborations", desc: "Music and cultural experiences designed around brands that want to connect with audiences in meaningful ways." },
-  { icon: "🎊", title: "Private Events", desc: "Curated entertainment for weddings, celebrations and exclusive private gatherings." },
-];
+export const revalidate = 300;
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const settings = await getSiteSettings();
+  const services = settings.services || [];
+
   return (
     <div style={{ background: "#080808", minHeight: "100vh", paddingTop: "80px" }}>
       {/* Hero */}
@@ -57,19 +57,15 @@ export default function AboutPage() {
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
               <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
-              <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.68rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c9a84c", fontWeight: 600 }}>Who We Are</span>
+              <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.68rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c9a84c", fontWeight: 600 }}>
+                {settings.aboutWhoWeAreTitle}
+              </span>
             </div>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 500, color: "#f0ece4", lineHeight: 1.2, marginBottom: "1.5rem" }}>
               Where Music Finds Its Home
             </h2>
-            <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", color: "#888880", lineHeight: 1.85, marginBottom: "1.2rem" }}>
-              Mehfil Collective was born from a simple but powerful belief — that live music and cultural experiences have the unique ability to bring people together, to create communities and to leave lasting impressions on the human soul.
-            </p>
-            <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", color: "#888880", lineHeight: 1.85, marginBottom: "1.2rem" }}>
-              We are a live entertainment and cultural events company focused on creating and managing experiences around live music, Bollywood, Sufi, devotional jamming, cultural gatherings, artist performances and curated events across India.
-            </p>
-            <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", color: "#888880", lineHeight: 1.85 }}>
-              From intimate Sufi evenings to large-scale productions, every Mehfil we create is a world unto itself — carefully conceptualized, beautifully executed and deeply felt.
+            <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", color: "#888880", lineHeight: 1.85, whiteSpace: "pre-wrap" }}>
+              {settings.aboutWhoWeAreText}
             </p>
           </div>
           <div style={{ position: "relative" }}>
@@ -122,20 +118,16 @@ export default function AboutPage() {
         <div style={{ position: "relative", zIndex: 1, maxWidth: "800px", margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "1rem" }}>
             <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
-            <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.68rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c9a84c", fontWeight: 600 }}>Our Philosophy</span>
+            <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.68rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c9a84c", fontWeight: 600 }}>
+              {settings.aboutPhilosophyTitle}
+            </span>
             <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
           </div>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 500, color: "#f0ece4", marginBottom: "2rem" }}>
             The Idea of a Mehfil
           </h2>
-          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.05rem", color: "#888880", lineHeight: 1.9, marginBottom: "1.5rem" }}>
-            A <span style={{ color: "#c9a84c", fontStyle: "italic" }}>mehfil</span> is more than a gathering. It is a space where music and poetry become bridges — between strangers, between cultures, between the ordinary and the extraordinary.
-          </p>
-          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.05rem", color: "#888880", lineHeight: 1.9, marginBottom: "1.5rem" }}>
-            Everything we do at Mehfil Collective is guided by this spirit. We do not just organize events — we create environments where people can lose themselves in music, discover artists, and leave with something that stays with them long after the last note has faded.
-          </p>
-          <p style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic", fontSize: "1.3rem", color: "#f0ece4" }}>
-            &ldquo;Every gathering has the potential to become something sacred.&rdquo;
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.05rem", color: "#888880", lineHeight: 1.9, whiteSpace: "pre-wrap" }}>
+            {settings.aboutPhilosophyText}
           </p>
         </div>
       </section>
@@ -149,14 +141,7 @@ export default function AboutPage() {
             { number: "15+", label: "Cities Reached" },
             { number: "50K+", label: "Audience Members" },
           ].map(({ number, label }) => (
-            <div
-              key={label}
-              style={{
-                padding: "2.5rem",
-                textAlign: "center",
-                background: "#080808",
-              }}
-            >
+            <div key={label} style={{ padding: "2.5rem", textAlign: "center", background: "#080808" }}>
               <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "3rem", fontWeight: 600, color: "#c9a84c", lineHeight: 1 }}>
                 {number}
               </div>
@@ -168,37 +153,37 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* What We Do */}
-      <section style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 2rem 5rem" }}>
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "1rem" }}>
-            <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
-            <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.68rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c9a84c", fontWeight: 600 }}>What We Do</span>
-            <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
-          </div>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 500, color: "#f0ece4" }}>
-            Our Services
-          </h2>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem" }}>
-          {services.map(({ icon, title, desc }) => (
-            <div
-              key={title}
-              style={{
-                padding: "2rem",
-                border: "1px solid rgba(255,255,255,0.05)",
-                transition: "border-color 0.3s ease",
-              }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(201,168,76,0.35)")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.05)")}
-            >
-              <div style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>{icon}</div>
-              <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#f0ece4", marginBottom: "0.75rem" }}>{title}</h3>
-              <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.88rem", color: "#888880", lineHeight: 1.75 }}>{desc}</p>
+      {/* What We Do — Dynamic from CMS */}
+      {services.length > 0 && (
+        <section style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 2rem 5rem" }}>
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "1rem" }}>
+              <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
+              <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.68rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c9a84c", fontWeight: 600 }}>What We Do</span>
+              <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
             </div>
-          ))}
-        </div>
-      </section>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 500, color: "#f0ece4" }}>
+              Our Services
+            </h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem" }}>
+            {services.map((svc: any, i: number) => (
+              <div
+                key={i}
+                style={{
+                  padding: "2rem",
+                  border: "1px solid rgba(255,255,255,0.05)",
+                  transition: "border-color 0.3s ease",
+                }}
+                className="service-card"
+              >
+                <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#f0ece4", marginBottom: "0.75rem" }}>{svc.title}</h3>
+                <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.88rem", color: "#888880", lineHeight: 1.75 }}>{svc.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* CTA */}
       <section style={{ padding: "5rem 2rem", textAlign: "center", borderTop: "1px solid rgba(201,168,76,0.08)" }}>
@@ -233,6 +218,7 @@ export default function AboutPage() {
         @media (max-width: 768px) {
           .about-grid { grid-template-columns: 1fr !important; }
         }
+        .service-card:hover { border-color: rgba(201,168,76,0.35) !important; }
       `}</style>
     </div>
   );

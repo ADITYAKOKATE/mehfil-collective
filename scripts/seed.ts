@@ -53,6 +53,17 @@ async function seed() {
     }));
     await Event.insertMany(eventDocs);
 
+    // Seed default SiteSettings (if not already present)
+    console.log("Seeding site settings...");
+    const SiteSettings = (await import("../src/models/Settings")).default;
+    const existing = await SiteSettings.findOne();
+    if (!existing) {
+      await SiteSettings.create({});
+      console.log("Default site settings created.");
+    } else {
+      console.log("Site settings already exist, skipping.");
+    }
+
     console.log("Database seeded successfully!");
   } catch (error) {
     console.error("Error seeding database:", error);

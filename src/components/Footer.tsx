@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 function SvgInstagram() {
   return (
@@ -16,13 +17,22 @@ function SvgInstagram() {
 function SvgYoutube() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+      <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
     </svg>
   );
 }
 
-import { usePathname } from "next/navigation";
+interface FooterProps {
+  contactEmail?: string;
+  contactPhone?: string;
+  contactLocation?: string;
+  instagramUrl?: string;
+  youtubeUrl?: string;
+  tagline?: string;
+}
 
-export default function Footer() {
+export default function Footer({ contactEmail, contactPhone, contactLocation, instagramUrl, youtubeUrl, tagline }: FooterProps) {
   const pathname = usePathname();
 
   if (pathname?.startsWith("/admin")) return null;
@@ -86,8 +96,8 @@ export default function Footer() {
             </p>
             <div style={{ display: "flex", gap: "1rem", marginTop: "1.5rem" }}>
               {[
-                { icon: <SvgInstagram />, href: "https://instagram.com", label: "Instagram" },
-                { icon: <SvgYoutube />, href: "https://youtube.com", label: "YouTube" },
+                { icon: <SvgInstagram />, href: instagramUrl || "https://instagram.com", label: "Instagram" },
+                { icon: <SvgYoutube />, href: youtubeUrl || "https://youtube.com", label: "YouTube" },
               ].map(({ icon, href, label }) => (
                 <a
                   key={label}
@@ -221,9 +231,9 @@ export default function Footer() {
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
               {[
-                { icon: <Mail size={14} />, text: "hello@mehfilcollective.com" },
-                { icon: <Phone size={14} />, text: "+91 98765 43210" },
-                { icon: <MapPin size={14} />, text: "Mumbai, India" },
+                { icon: <Mail size={14} />, text: contactEmail || "hello@mehfilcollective.com" },
+                { icon: <Phone size={14} />, text: contactPhone || "+91 98765 43210" },
+                { icon: <MapPin size={14} />, text: contactLocation || "Mumbai, India" },
               ].map(({ icon, text }) => (
                 <div
                   key={text}
@@ -278,10 +288,10 @@ export default function Footer() {
           }}
         >
           <p style={{ color: "#444", fontSize: "0.78rem", fontFamily: "'Outfit', sans-serif", letterSpacing: "0.05em" }}>
-            © 2026 Mehfil Collective. All rights reserved.
+            Where Music Meets People.
           </p>
           <p style={{ color: "#444", fontSize: "0.78rem", fontFamily: "'Outfit', sans-serif", letterSpacing: "0.05em" }}>
-            Where Music Meets People.
+            {tagline || "Where Music Meets People."}
           </p>
         </div>
       </div>

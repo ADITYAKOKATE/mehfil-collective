@@ -26,6 +26,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <NavLink href="/admin/events" icon={<Calendar size={18} />} label="Events" />
           <NavLink href="/admin/artists" icon={<Users size={18} />} label="Artists" />
           <NavLink href="/admin/enquiries" icon={<MessageSquare size={18} />} label="Enquiries" />
+          <NavLink href="/admin/settings" icon={<Settings size={18} />} label="Site Settings" />
         </nav>
 
         <div style={{ padding: "2rem 1rem", borderTop: "1px solid rgba(255,255,255,0.1)" }}>

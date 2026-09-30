@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import AuthProvider from "@/components/AuthProvider";
+import { getSiteSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "Mehfil Collective — Where Music Meets People",
@@ -35,11 +36,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="en">
       <head>
@@ -51,8 +54,15 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           <main>{children}</main>
-          <Footer />
-          <WhatsAppFloat />
+          <Footer
+            contactEmail={settings.contactEmail}
+            contactPhone={settings.contactPhone}
+            contactLocation={settings.contactLocation}
+            instagramUrl={settings.instagramUrl}
+            youtubeUrl={settings.youtubeUrl}
+            tagline={settings.siteTagline}
+          />
+          <WhatsAppFloat whatsappNumber={settings.whatsappNumber} />
         </AuthProvider>
       </body>
     </html>

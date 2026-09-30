@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 
-export default function WhatsAppFloat() {
+export default function WhatsAppFloat({ whatsappNumber }: { whatsappNumber?: string }) {
   const [hovered, setHovered] = useState(false);
+  const number = (whatsappNumber || "+919876543210").replace(/[^0-9]/g, "");
 
   return (
     <a
-      href="https://wa.me/919876543210?text=Hi%20Mehfil%20Collective%2C%20I%27d%20like%20to%20enquire%20about%20your%20events."
+      href={`https://wa.me/${number}?text=Hi%20Mehfil%20Collective%2C%20I%27d%20like%20to%20enquire%20about%20your%20events.`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
