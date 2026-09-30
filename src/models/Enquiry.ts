@@ -8,6 +8,8 @@ export interface IEnquiry extends Document {
   message: string;
   type: "contact" | "collaborate";
   status: "new" | "in-progress" | "resolved";
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const EnquirySchema: Schema<IEnquiry> = new Schema(

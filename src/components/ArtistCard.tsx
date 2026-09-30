@@ -136,7 +136,7 @@ export default function ArtistCard({ artist }: Props) {
                 transition: "all 0.3s ease",
               }}
             >
-              {artist.genres.slice(0, 3).map((genre) => (
+              {artist.genres.slice(0, 3).map((genre: string) => (
                 <span
                   key={genre}
                   style={{
