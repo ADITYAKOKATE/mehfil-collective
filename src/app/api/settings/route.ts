@@ -3,11 +3,11 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import connectToDatabase from "@/lib/db";
 import SiteSettings from "@/models/Settings";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
     await connectToDatabase();
-    // There is always exactly one settings document. Find or create it.
     let settings = await SiteSettings.findOne();
     if (!settings) {
       settings = await SiteSettings.create({});
@@ -31,10 +31,20 @@ export async function PUT(req: Request) {
 
     let settings = await SiteSettings.findOne();
     if (!settings) {
-      settings = await SiteSettings.create(body);
+      await SiteSettings.create(body);
     } else {
       await SiteSettings.findByIdAndUpdate(settings._id, body, { new: true });
     }
+
+    // Instantly bust the ISR cache for ALL pages that display settings data.
+    // Works on both local dev and Vercel production — no delay.
+    revalidatePath("/");
+    revalidatePath("/about");
+    revalidatePath("/collaborate");
+    revalidatePath("/contact");
+    revalidatePath("/events");
+    revalidatePath("/artists");
+    revalidatePath("/gallery");
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

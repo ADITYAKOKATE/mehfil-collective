@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Learn about Mehfil Collective — our story, philosophy and the team behind the experiences.",
 };
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export default async function AboutPage() {
   const settings = await getSiteSettings();

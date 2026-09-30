@@ -135,3 +135,26 @@ body {
   inset: 0;
   background: linear-gradient(to top, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.4) 50%, transparent 100%);
 }
+
+/* =====================================================
+   Admin Panel — Force visible black text in all inputs
+   ===================================================== */
+input,
+textarea,
+select {
+  color: #111111 !important;
+  background-color: #ffffff;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #aaaaaa !important;
+  opacity: 1;
+}
+
+/* Prevent body dark background from bleeding into admin inputs */
+.admin-input {
+  color: #111111 !important;
+  background: #ffffff !important;
+}
+
