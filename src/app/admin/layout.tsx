@@ -45,7 +45,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
       {/* Main Content */}
       <main style={{ flex: 1, padding: "2rem", overflowY: "auto" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", background: "#fff", borderRadius: "8px", boxShadow: "0 4px 12px rgba(0,0,0,0.05)", minHeight: "calc(100vh - 4rem)", padding: "2rem" }}>
+        <div className="admin-cms-panel" style={{ maxWidth: "1200px", margin: "0 auto", background: "#fff", borderRadius: "8px", boxShadow: "0 4px 12px rgba(0,0,0,0.05)", minHeight: "calc(100vh - 4rem)", padding: "2rem" }}>
           {children}
         </div>
       </main>

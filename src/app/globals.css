@@ -137,30 +137,25 @@ body {
 }
 
 /* =====================================================
-   Admin Panel — Force visible black text in all inputs
+   Admin CMS Panel — White inputs for light-theme forms
+   Scoped ONLY to .admin-cms-panel wrapper in admin layout
+   Does NOT affect: admin login page, public site inputs
    ===================================================== */
-input,
-textarea,
-select {
+.admin-cms-panel input,
+.admin-cms-panel textarea,
+.admin-cms-panel select {
   color: #111111 !important;
-  background-color: #ffffff;
+  background-color: #ffffff !important;
 }
 
-/* Fix dropdown options visibility */
-select option {
+/* Admin CMS select options — white bg, black text */
+.admin-cms-panel select option {
   background-color: #ffffff !important;
   color: #111111 !important;
 }
 
-input::placeholder,
-textarea::placeholder {
-  color: #aaaaaa !important;
-  opacity: 1;
+/* Public site & admin login selects — dark bg, light text */
+select:not(.admin-cms-panel select) option {
+  background-color: #111111 !important;
+  color: #f0ece4 !important;
 }
-
-/* Prevent body dark background from bleeding into admin inputs */
-.admin-input {
-  color: #111111 !important;
-  background: #ffffff !important;
-}
-
