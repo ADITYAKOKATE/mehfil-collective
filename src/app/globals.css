@@ -146,6 +146,12 @@ select {
   background-color: #ffffff;
 }
 
+/* Fix dropdown options visibility */
+select option {
+  background-color: #ffffff !important;
+  color: #111111 !important;
+}
+
 input::placeholder,
 textarea::placeholder {
   color: #aaaaaa !important;

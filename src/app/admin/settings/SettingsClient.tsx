@@ -8,8 +8,42 @@ const tabs = [
   { id: "about", label: "About Page", icon: Info },
   { id: "services", label: "Services", icon: Briefcase },
   { id: "contact", label: "Contact Info", icon: Phone },
-  { id: "social", label: "Social & Brand", icon: Globe },
+  { id: "social", label: "Social Media", icon: Globe },
 ];
+
+// Platform icons as inline SVGs
+const PlatformIcons: Record<string, React.ReactNode> = {
+  instagram: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+    </svg>
+  ),
+  youtube: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+      <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+    </svg>
+  ),
+  linkedin: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+      <rect x="2" y="9" width="4" height="12"/>
+      <circle cx="4" cy="4" r="2"/>
+    </svg>
+  ),
+  facebook: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+    </svg>
+  ),
+  twitter: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+    </svg>
+  ),
+};
 
 const inputStyle = {
   width: "100%",
@@ -18,6 +52,8 @@ const inputStyle = {
   borderRadius: "6px",
   fontFamily: "'Outfit', sans-serif",
   fontSize: "0.9rem",
+  color: "#111",
+  background: "#fff",
   outline: "none",
   boxSizing: "border-box" as const,
 };
@@ -49,6 +85,16 @@ export default function SettingsClient() {
     fetch("/api/settings")
       .then((r) => r.json())
       .then((data) => {
+        // Migrate old flat fields to socialLinks if needed
+        if (!data.socialLinks || data.socialLinks.length === 0) {
+          data.socialLinks = [
+            { platform: "instagram", label: "Instagram", url: data.instagramUrl || "", enabled: true },
+            { platform: "youtube",   label: "YouTube",   url: data.youtubeUrl || "",   enabled: false },
+            { platform: "linkedin",  label: "LinkedIn",  url: "",                       enabled: false },
+            { platform: "facebook",  label: "Facebook",  url: "",                       enabled: false },
+            { platform: "twitter",   label: "Twitter / X", url: "",                     enabled: false },
+          ];
+        }
         setForm(data);
         setLoading(false);
       });
@@ -74,6 +120,19 @@ export default function SettingsClient() {
   const removeService = (index: number) => {
     const updated = (form.services || []).filter((_: any, i: number) => i !== index);
     setForm({ ...form, services: updated });
+  };
+
+  // Social link handlers
+  const handleSocialUrl = (index: number, value: string) => {
+    const updated = [...(form.socialLinks || [])];
+    updated[index] = { ...updated[index], url: value };
+    setForm({ ...form, socialLinks: updated });
+  };
+
+  const handleSocialToggle = (index: number) => {
+    const updated = [...(form.socialLinks || [])];
+    updated[index] = { ...updated[index], enabled: !updated[index].enabled };
+    setForm({ ...form, socialLinks: updated });
   };
 
   const handleSave = async () => {
@@ -142,7 +201,7 @@ export default function SettingsClient() {
       )}
 
       {/* Tabs */}
-      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "2rem", borderBottom: "2px solid #f0f0f0", paddingBottom: "0" }}>
+      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "2rem", borderBottom: "2px solid #f0f0f0", flexWrap: "wrap" }}>
         {tabs.map((tab) => {
           const Icon = tab.icon;
           return (
@@ -290,20 +349,112 @@ export default function SettingsClient() {
         </div>
       )}
 
-      {/* Tab: Social & Brand */}
+      {/* Tab: Social Media Manager */}
       {activeTab === "social" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", maxWidth: "600px" }}>
-          <div>
+        <div style={{ maxWidth: "700px" }}>
+          {/* Site Tagline */}
+          <div style={{ marginBottom: "2rem" }}>
             <label style={labelStyle}>Site Tagline (used in Footer & SEO)</label>
             <input name="siteTagline" value={form.siteTagline || ""} onChange={handleChange} style={inputStyle} placeholder="Where Music Meets People." />
           </div>
-          <div>
-            <label style={labelStyle}>Instagram Profile URL</label>
-            <input name="instagramUrl" value={form.instagramUrl || ""} onChange={handleChange} style={inputStyle} placeholder="https://instagram.com/mehfilcollective" />
-          </div>
-          <div>
-            <label style={labelStyle}>YouTube Channel URL</label>
-            <input name="youtubeUrl" value={form.youtubeUrl || ""} onChange={handleChange} style={inputStyle} placeholder="https://youtube.com/@mehfilcollective" />
+
+          <div style={{ borderTop: "1px solid #eee", paddingTop: "1.5rem" }}>
+            <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#333", marginBottom: "0.4rem" }}>
+              Social Media Accounts
+            </h3>
+            <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.82rem", color: "#888", marginBottom: "1.5rem" }}>
+              Toggle the switch to show or hide a platform on the public website. Only enabled accounts appear in the Footer.
+            </p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {(form.socialLinks || []).map((link: any, index: number) => (
+                <div
+                  key={link.platform}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "1rem",
+                    padding: "1rem 1.25rem",
+                    border: `1px solid ${link.enabled ? "#c9a84c" : "#eee"}`,
+                    borderRadius: "8px",
+                    background: link.enabled ? "#fffdf5" : "#fafafa",
+                    transition: "all 0.2s ease",
+                  }}
+                >
+                  {/* Icon + Platform Name */}
+                  <div style={{
+                    width: "40px", height: "40px",
+                    borderRadius: "8px",
+                    background: link.enabled ? "rgba(201,168,76,0.12)" : "#f0f0f0",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: link.enabled ? "#c9a84c" : "#aaa",
+                    flexShrink: 0,
+                  }}>
+                    {PlatformIcons[link.platform] || <Globe size={20} />}
+                  </div>
+
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", fontWeight: 600, color: "#333", marginBottom: "0.4rem" }}>
+                      {link.label}
+                    </div>
+                    <input
+                      value={link.url || ""}
+                      onChange={(e) => handleSocialUrl(index, e.target.value)}
+                      placeholder={`https://${link.platform}.com/yourpage`}
+                      disabled={!link.enabled}
+                      style={{
+                        ...inputStyle,
+                        background: link.enabled ? "#fff" : "#f5f5f5",
+                        color: link.enabled ? "#111" : "#aaa",
+                        cursor: link.enabled ? "text" : "not-allowed",
+                        fontSize: "0.82rem",
+                        padding: "8px 10px",
+                      }}
+                    />
+                  </div>
+
+                  {/* Toggle Switch */}
+                  <div
+                    onClick={() => handleSocialToggle(index)}
+                    style={{
+                      width: "46px", height: "26px",
+                      borderRadius: "13px",
+                      background: link.enabled ? "#c9a84c" : "#ddd",
+                      cursor: "pointer",
+                      position: "relative",
+                      flexShrink: 0,
+                      transition: "background 0.25s ease",
+                    }}
+                  >
+                    <div style={{
+                      position: "absolute",
+                      top: "3px",
+                      left: link.enabled ? "23px" : "3px",
+                      width: "20px", height: "20px",
+                      borderRadius: "50%",
+                      background: "#fff",
+                      boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+                      transition: "left 0.25s ease",
+                    }} />
+                  </div>
+
+                  {/* Status badge */}
+                  <div style={{
+                    flexShrink: 0,
+                    fontFamily: "'Outfit', sans-serif",
+                    fontSize: "0.72rem",
+                    fontWeight: 600,
+                    color: link.enabled ? "#16a34a" : "#aaa",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    minWidth: "50px",
+                    textAlign: "center",
+                  }}>
+                    {link.enabled ? "Live" : "Off"}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

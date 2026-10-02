@@ -58,9 +58,8 @@ export default async function RootLayout({
             contactEmail={settings.contactEmail}
             contactPhone={settings.contactPhone}
             contactLocation={settings.contactLocation}
-            instagramUrl={settings.instagramUrl}
-            youtubeUrl={settings.youtubeUrl}
             tagline={settings.siteTagline}
+            socialLinks={(settings.socialLinks as any) || []}
           />
           <WhatsAppFloat whatsappNumber={settings.whatsappNumber} />
         </AuthProvider>

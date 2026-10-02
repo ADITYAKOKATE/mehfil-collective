@@ -6,6 +6,13 @@ export interface IService {
   icon?: string;
 }
 
+export interface ISocialLink {
+  platform: string;   // "instagram" | "youtube" | "linkedin" | "facebook" | "twitter"
+  label: string;      // Display name e.g. "Instagram"
+  url: string;
+  enabled: boolean;
+}
+
 export interface ISiteSettings extends Document {
   // Homepage
   homeHeroTitle: string;
@@ -31,9 +38,10 @@ export interface ISiteSettings extends Document {
   contactEmail: string;
   contactPhone: string;
   contactLocation: string;
-  instagramUrl: string;
-  youtubeUrl: string;
   whatsappNumber: string;
+
+  // Social Media Links (replaces flat instagramUrl/youtubeUrl)
+  socialLinks: ISocialLink[];
 
   // SEO & Brand
   siteTagline: string;
@@ -43,6 +51,13 @@ const ServiceSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   icon: { type: String, default: "" },
+});
+
+const SocialLinkSchema = new Schema({
+  platform: { type: String, required: true },
+  label: { type: String, required: true },
+  url: { type: String, default: "" },
+  enabled: { type: Boolean, default: false },
 });
 
 const SiteSettingsSchema: Schema<ISiteSettings> = new Schema(
@@ -88,17 +103,26 @@ const SiteSettingsSchema: Schema<ISiteSettings> = new Schema(
     collaborateTitle: { type: String, default: "Let's Create Something Together." },
     collaborateSubtitle: {
       type: String,
-      default:
-        "Whether you're a brand, venue, event organizer or sponsor, we'd love to hear from you.",
+      default: "Whether you're a brand, venue, event organizer or sponsor, we'd love to hear from you.",
     },
 
     // Global Contact Info
     contactEmail: { type: String, default: "hello@mehfilcollective.com" },
     contactPhone: { type: String, default: "+91 98765 43210" },
     contactLocation: { type: String, default: "Mumbai, Maharashtra, India" },
-    instagramUrl: { type: String, default: "https://instagram.com/mehfilcollective" },
-    youtubeUrl: { type: String, default: "https://youtube.com/@mehfilcollective" },
     whatsappNumber: { type: String, default: "+919372433632" },
+
+    // Social Media Links
+    socialLinks: {
+      type: [SocialLinkSchema],
+      default: [
+        { platform: "instagram", label: "Instagram", url: "https://instagram.com/mehfilcollective", enabled: true },
+        { platform: "youtube",   label: "YouTube",   url: "https://youtube.com/@mehfilcollective",  enabled: false },
+        { platform: "linkedin",  label: "LinkedIn",  url: "",                                        enabled: false },
+        { platform: "facebook",  label: "Facebook",  url: "",                                        enabled: false },
+        { platform: "twitter",   label: "Twitter / X", url: "",                                      enabled: false },
+      ],
+    },
 
     // Brand
     siteTagline: { type: String, default: "Where Music Meets People." },
