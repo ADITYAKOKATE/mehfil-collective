@@ -56,7 +56,6 @@ export default async function RootLayout({
           <main>{children}</main>
           <Footer
             contactEmail={settings.contactEmail}
-            contactPhone={settings.contactPhone}
             contactLocation={settings.contactLocation}
             tagline={settings.siteTagline}
             socialLinks={(settings.socialLinks as any) || []}

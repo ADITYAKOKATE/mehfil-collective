@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 // SVG icons for each platform
@@ -47,13 +47,12 @@ interface SocialLink {
 
 interface FooterProps {
   contactEmail?: string;
-  contactPhone?: string;
   contactLocation?: string;
   tagline?: string;
   socialLinks?: SocialLink[];
 }
 
-export default function Footer({ contactEmail, contactPhone, contactLocation, tagline, socialLinks = [] }: FooterProps) {
+export default function Footer({ contactEmail, contactLocation, tagline, socialLinks = [] }: FooterProps) {
   const pathname = usePathname();
   if (pathname?.startsWith("/admin")) return null;
 
@@ -148,7 +147,6 @@ export default function Footer({ contactEmail, contactPhone, contactLocation, ta
             <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
               {[
                 { icon: <Mail size={14} />, text: contactEmail || "hello@mehfilcollective.com" },
-                { icon: <Phone size={14} />, text: contactPhone || "+91 98765 43210" },
                 { icon: <MapPin size={14} />, text: contactLocation || "Mumbai, India" },
               ].map(({ icon, text }) => (
                 <div key={text} style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: "#888880" }}>
