@@ -50,7 +50,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function HomePageClient({ upcomingEvents, featuredArtists, pastEvents }: { upcomingEvents: any[], featuredArtists: any[], pastEvents: any[] }) {
+export default function HomePageClient({ upcomingEvents, featuredArtists, pastEvents, instagramUrl }: { upcomingEvents: any[], featuredArtists: any[], pastEvents: any[], instagramUrl?: string }) {
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -629,7 +629,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
             Stay updated with our latest events, behind-the-scenes moments and artist stories. Follow us on Instagram for the full Mehfil experience.
           </p>
           <a
-            href="https://instagram.com/mehfilcollective"
+            href={instagramUrl || "https://instagram.com/mehfilcollective"}
             target="_blank"
             rel="noopener noreferrer"
             style={{
