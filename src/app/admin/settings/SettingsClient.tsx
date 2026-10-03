@@ -338,13 +338,88 @@ export default function SettingsClient() {
             <input name="contactPhone" value={form.contactPhone || ""} onChange={handleChange} style={inputStyle} placeholder="+91 98765 43210" />
           </div>
           <div>
-            <label style={labelStyle}>WhatsApp Number (with country code, no spaces)</label>
-            <input name="whatsappNumber" value={form.whatsappNumber || ""} onChange={handleChange} style={inputStyle} placeholder="+919876543210" />
-            <p style={{ fontSize: "0.75rem", color: "#888", marginTop: "4px" }}>Used for the WhatsApp floating button and contact links.</p>
-          </div>
-          <div>
             <label style={labelStyle}>Location</label>
             <input name="contactLocation" value={form.contactLocation || ""} onChange={handleChange} style={inputStyle} placeholder="Mumbai, Maharashtra, India" />
+          </div>
+
+          {/* WhatsApp Section */}
+          <div style={{ borderTop: "1px solid #eee", paddingTop: "1.5rem" }}>
+            <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", fontWeight: 600, color: "#333", marginBottom: "0.4rem" }}>
+              WhatsApp
+            </h3>
+            <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.82rem", color: "#888", marginBottom: "1.25rem" }}>
+              This number is used on the floating WhatsApp button, all "WhatsApp Us" buttons across the website, and the contact section.
+            </p>
+
+            {/* Enable/Disable Toggle Row */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "1rem 1.25rem",
+                border: `1px solid ${form.whatsappEnabled ? "#25d366" : "#eee"}`,
+                borderRadius: "8px",
+                background: form.whatsappEnabled ? "rgba(37,211,102,0.04)" : "#fafafa",
+                marginBottom: "1rem",
+                transition: "all 0.2s ease",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <div style={{
+                  width: "36px", height: "36px", borderRadius: "8px",
+                  background: form.whatsappEnabled ? "rgba(37,211,102,0.12)" : "#f0f0f0",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: form.whatsappEnabled ? "#25d366" : "#aaa",
+                }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.88rem", fontWeight: 600, color: "#333" }}>
+                    WhatsApp Button
+                  </div>
+                  <div style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.76rem", color: "#888", marginTop: "2px" }}>
+                    Show WhatsApp buttons across the website
+                  </div>
+                </div>
+              </div>
+
+              {/* Toggle */}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.76rem", fontWeight: 600, color: form.whatsappEnabled ? "#16a34a" : "#aaa", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                  {form.whatsappEnabled ? "Live" : "Off"}
+                </span>
+                <div
+                  onClick={() => setForm({ ...form, whatsappEnabled: !form.whatsappEnabled })}
+                  style={{ width: "46px", height: "26px", borderRadius: "13px", background: form.whatsappEnabled ? "#25d366" : "#ddd", cursor: "pointer", position: "relative", transition: "background 0.25s ease" }}
+                >
+                  <div style={{ position: "absolute", top: "3px", left: form.whatsappEnabled ? "23px" : "3px", width: "20px", height: "20px", borderRadius: "50%", background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.2)", transition: "left 0.25s ease" }} />
+                </div>
+              </div>
+            </div>
+
+            {/* WhatsApp Number Input */}
+            <div>
+              <label style={labelStyle}>WhatsApp Number (with country code, no spaces)</label>
+              <input
+                name="whatsappNumber"
+                value={form.whatsappNumber || ""}
+                onChange={handleChange}
+                disabled={!form.whatsappEnabled}
+                style={{
+                  ...inputStyle,
+                  background: form.whatsappEnabled ? "#fff" : "#f5f5f5",
+                  color: form.whatsappEnabled ? "#111" : "#aaa",
+                  cursor: form.whatsappEnabled ? "text" : "not-allowed",
+                }}
+                placeholder="+919876543210"
+              />
+              <p style={{ fontSize: "0.75rem", color: "#888", marginTop: "6px" }}>
+                This single number is synced everywhere — floating button, "WhatsApp Us" buttons on homepage, collaborate page, contact page, and event pages.
+              </p>
+            </div>
           </div>
         </div>
       )}

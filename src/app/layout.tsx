@@ -60,7 +60,7 @@ export default async function RootLayout({
             tagline={settings.siteTagline}
             socialLinks={(settings.socialLinks as any) || []}
           />
-          <WhatsAppFloat whatsappNumber={settings.whatsappNumber} />
+          <WhatsAppFloat whatsappNumber={settings.whatsappNumber} whatsappEnabled={settings.whatsappEnabled} />
         </AuthProvider>
       </body>
     </html>

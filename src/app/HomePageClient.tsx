@@ -50,7 +50,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function HomePageClient({ upcomingEvents, featuredArtists, pastEvents, instagramUrl }: { upcomingEvents: any[], featuredArtists: any[], pastEvents: any[], instagramUrl?: string }) {
+export default function HomePageClient({ upcomingEvents, featuredArtists, pastEvents, instagramUrl, whatsappNumber, whatsappEnabled }: { upcomingEvents: any[], featuredArtists: any[], pastEvents: any[], instagramUrl?: string, whatsappNumber?: string, whatsappEnabled?: boolean }) {
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -742,8 +742,9 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
             >
               Start a Conversation
             </Link>
+            {(whatsappEnabled !== false) && (
             <a
-              href="https://wa.me/919876543210"
+              href={`https://wa.me/${(whatsappNumber || "+919372433632").replace(/[^0-9]/g, "")}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -766,6 +767,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
             >
               WhatsApp Us
             </a>
+            )}
           </div>
         </div>
       </section>

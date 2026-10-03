@@ -39,6 +39,7 @@ export interface ISiteSettings extends Document {
   contactPhone: string;
   contactLocation: string;
   whatsappNumber: string;
+  whatsappEnabled: boolean;
 
   // Social Media Links (replaces flat instagramUrl/youtubeUrl)
   socialLinks: ISocialLink[];
@@ -111,6 +112,7 @@ const SiteSettingsSchema: Schema<ISiteSettings> = new Schema(
     contactPhone: { type: String, default: "+91 98765 43210" },
     contactLocation: { type: String, default: "Mumbai, Maharashtra, India" },
     whatsappNumber: { type: String, default: "+919372433632" },
+    whatsappEnabled: { type: Boolean, default: true },
 
     // Social Media Links
     socialLinks: {

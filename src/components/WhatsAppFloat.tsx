@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 
-export default function WhatsAppFloat({ whatsappNumber }: { whatsappNumber?: string }) {
+export default function WhatsAppFloat({ whatsappNumber, whatsappEnabled = true }: { whatsappNumber?: string; whatsappEnabled?: boolean }) {
   const [hovered, setHovered] = useState(false);
-  const number = (whatsappNumber || "+919876543210").replace(/[^0-9]/g, "");
+  const number = (whatsappNumber || "+919372433632").replace(/[^0-9]/g, "");
+
+  if (!whatsappEnabled) return null;
 
   return (
     <a

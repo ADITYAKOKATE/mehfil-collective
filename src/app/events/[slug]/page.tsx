@@ -5,6 +5,7 @@ import { Calendar, Clock, MapPin, ArrowLeft, ExternalLink } from "lucide-react";
 import connectToDatabase from "@/lib/db";
 import Event from "@/models/Event";
 import Artist from "@/models/Artist";
+import { getSiteSettings } from "@/lib/settings";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -45,6 +46,10 @@ export default async function EventPage({ params }: Props) {
       : event!.ticketType === "register"
       ? "Register Now"
       : "Enquire Now";
+
+  const settings = await getSiteSettings();
+  const whatsappNumber = (settings.whatsappNumber || "+919372433632").replace(/[^0-9]/g, "");
+  const whatsappEnabled = settings.whatsappEnabled !== false;
 
   return (
     <div style={{ background: "#080808", minHeight: "100vh", paddingTop: "80px" }}>
@@ -240,8 +245,9 @@ export default async function EventPage({ params }: Props) {
               >
                 {ticketLabel} <ExternalLink size={14} />
               </a>
+              {whatsappEnabled && (
               <a
-                href="https://wa.me/919876543210"
+                href={`https://wa.me/${whatsappNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -262,6 +268,7 @@ export default async function EventPage({ params }: Props) {
               >
                 WhatsApp Enquiry
               </a>
+              )}
             </div>
           </div>
         </div>
