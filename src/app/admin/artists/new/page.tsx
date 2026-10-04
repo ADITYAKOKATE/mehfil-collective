@@ -19,6 +19,7 @@ export default function NewArtistPage() {
     instagram: "",
     youtube: "",
     spotify: "",
+    gallery: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -31,10 +32,15 @@ export default function NewArtistPage() {
     setError("");
 
     try {
+      const payload = {
+        ...formData,
+        gallery: formData.gallery.split(",").map((g) => g.trim()).filter(Boolean),
+      };
+
       const res = await fetch("/api/artists", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -139,6 +145,12 @@ export default function NewArtistPage() {
             <label style={labelStyle}>Spotify Profile</label>
             <input name="spotify" value={formData.spotify} onChange={handleChange} style={inputStyle} placeholder="https://open.spotify.com/..." />
           </div>
+        </div>
+
+        <div style={{ marginBottom: "2rem" }}>
+          <label style={labelStyle}>Gallery Images (comma-separated URLs)</label>
+          <textarea name="gallery" value={formData.gallery} onChange={handleChange} style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} placeholder="https://image1.jpg, https://image2.jpg" />
+          <p style={{ fontSize: "0.75rem", color: "#888", marginTop: "0.25rem" }}>Paste image URLs separated by commas.</p>
         </div>
 
         <button

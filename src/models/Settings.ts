@@ -13,6 +13,12 @@ export interface ISocialLink {
   enabled: boolean;
 }
 
+export interface IGalleryImage {
+  src: string;
+  category: string;
+  caption: string;
+}
+
 export interface ISiteSettings extends Document {
   // Homepage
   homeHeroTitle: string;
@@ -46,6 +52,9 @@ export interface ISiteSettings extends Document {
 
   // SEO & Brand
   siteTagline: string;
+
+  // Global Gallery
+  globalGallery: IGalleryImage[];
 }
 
 const ServiceSchema = new Schema({
@@ -59,6 +68,12 @@ const SocialLinkSchema = new Schema({
   label: { type: String, required: true },
   url: { type: String, default: "" },
   enabled: { type: Boolean, default: false },
+});
+
+const GalleryImageSchema = new Schema({
+  src: { type: String, required: true },
+  category: { type: String, required: true },
+  caption: { type: String, default: "" },
 });
 
 const SiteSettingsSchema: Schema<ISiteSettings> = new Schema(
@@ -128,6 +143,29 @@ const SiteSettingsSchema: Schema<ISiteSettings> = new Schema(
 
     // Brand
     siteTagline: { type: String, default: "Where Music Meets People." },
+
+    // Global Gallery
+    globalGallery: {
+      type: [GalleryImageSchema],
+      default: [
+        { src: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&q=80", category: "Events", caption: "Bollywood Raat — Mumbai" },
+        { src: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80", category: "Artists", caption: "Live performance" },
+        { src: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80", category: "Events", caption: "Sufi Mehfil — Pune" },
+        { src: "https://images.unsplash.com/photo-1501386761578-eaa54b4e3bcd?w=800&q=80", category: "Audience", caption: "The crowd comes alive" },
+        { src: "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800&q=80", category: "Events", caption: "Concert night" },
+        { src: "https://images.unsplash.com/photo-1515978022489-f9d0e2545d8c?w=800&q=80", category: "Artists", caption: "On stage" },
+        { src: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80", category: "Events", caption: "Lights and music" },
+        { src: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=800&q=80", category: "Venues", caption: "The venue" },
+        { src: "https://images.unsplash.com/photo-1598387993441-a364f854cfaa?w=800&q=80", category: "Behind the Scenes", caption: "Sound check" },
+        { src: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=800&q=80", category: "Artists", caption: "Classical performance" },
+        { src: "https://images.unsplash.com/photo-1571689936114-b05f2a0bdd82?w=800&q=80", category: "Behind the Scenes", caption: "Backstage" },
+        { src: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80", category: "Audience", caption: "Together in music" },
+        { src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80", category: "Events", caption: "Corporate gala" },
+        { src: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&q=80", category: "Artists", caption: "The artist" },
+        { src: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=800&q=80", category: "Audience", caption: "Shared moments" },
+        { src: "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=800&q=80", category: "Venues", caption: "The stage is set" },
+      ],
+    },
   },
   { timestamps: true }
 );

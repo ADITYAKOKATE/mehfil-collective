@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Save, Globe, Home, Info, Phone, Briefcase, Loader } from "lucide-react";
+import { Save, Globe, Home, Info, Phone, Briefcase, Loader, Image } from "lucide-react";
 
 const tabs = [
   { id: "homepage", label: "Homepage", icon: Home },
@@ -9,6 +9,7 @@ const tabs = [
   { id: "services", label: "Services", icon: Briefcase },
   { id: "contact", label: "Contact Info", icon: Phone },
   { id: "social", label: "Social Media", icon: Globe },
+  { id: "gallery", label: "Global Gallery", icon: Image },
 ];
 
 // Platform icons as inline SVGs
@@ -133,6 +134,25 @@ export default function SettingsClient() {
     const updated = [...(form.socialLinks || [])];
     updated[index] = { ...updated[index], enabled: !updated[index].enabled };
     setForm({ ...form, socialLinks: updated });
+  };
+
+  const handleGalleryChange = (index: number, field: string, value: string) => {
+    const updated = [...(form.globalGallery || [])];
+    updated[index] = { ...updated[index], [field]: value };
+    setForm({ ...form, globalGallery: updated });
+  };
+
+  const addGalleryImage = () => {
+    setForm({
+      ...form,
+      globalGallery: [{ src: "", category: "Events", caption: "" }, ...(form.globalGallery || [])],
+    });
+  };
+
+  const removeGalleryImage = (index: number) => {
+    const updated = [...(form.globalGallery || [])];
+    updated.splice(index, 1);
+    setForm({ ...form, globalGallery: updated });
   };
 
   const handleSave = async () => {
@@ -530,6 +550,64 @@ export default function SettingsClient() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Global Gallery */}
+      {activeTab === "gallery" && (
+        <div style={{ maxWidth: "800px" }}>
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666", marginBottom: "1.5rem" }}>
+            Manage the images that appear on the public Gallery page. You can categorize them and add captions.
+          </p>
+          <button
+            onClick={addGalleryImage}
+            style={{ marginBottom: "2rem", padding: "8px 16px", background: "#f0f0f0", color: "#333", border: "1px solid #ddd", borderRadius: "6px", fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", cursor: "pointer" }}
+          >
+            + Add New Image
+          </button>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            {(form.globalGallery || []).map((img: any, index: number) => (
+              <div key={index} style={{ display: "flex", gap: "1rem", padding: "1.5rem", border: "1px solid #eee", borderRadius: "8px", background: "#fafafa" }}>
+                <div style={{ width: "120px", height: "120px", background: "#eee", borderRadius: "4px", overflow: "hidden", flexShrink: 0 }}>
+                  {img.src ? (
+                    <img src={img.src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  ) : (
+                    <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#aaa", fontSize: "0.75rem", fontFamily: "'Outfit', sans-serif" }}>No Image</div>
+                  )}
+                </div>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1rem" }}>
+                  <div>
+                    <label style={labelStyle}>Image URL *</label>
+                    <input value={img.src || ""} onChange={(e) => handleGalleryChange(index, "src", e.target.value)} style={inputStyle} placeholder="https://..." />
+                  </div>
+                  <div style={{ display: "flex", gap: "1rem" }}>
+                    <div style={{ flex: 1 }}>
+                      <label style={labelStyle}>Category</label>
+                      <select value={img.category || "Events"} onChange={(e) => handleGalleryChange(index, "category", e.target.value)} style={inputStyle}>
+                        <option value="Events">Events</option>
+                        <option value="Artists">Artists</option>
+                        <option value="Audience">Audience</option>
+                        <option value="Venues">Venues</option>
+                        <option value="Behind the Scenes">Behind the Scenes</option>
+                      </select>
+                    </div>
+                    <div style={{ flex: 2 }}>
+                      <label style={labelStyle}>Caption</label>
+                      <input value={img.caption || ""} onChange={(e) => handleGalleryChange(index, "caption", e.target.value)} style={inputStyle} placeholder="A magical night..." />
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <button
+                      onClick={() => removeGalleryImage(index)}
+                      style={{ background: "#fff5f5", color: "#dc3545", border: "1px solid #ffcaca", borderRadius: "4px", padding: "4px 12px", cursor: "pointer", fontFamily: "'Outfit', sans-serif", fontSize: "0.8rem" }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}

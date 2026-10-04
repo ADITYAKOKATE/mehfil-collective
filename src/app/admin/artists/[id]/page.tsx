@@ -23,6 +23,7 @@ export default function EditArtistPage({ params }: { params: Promise<{ id: strin
     instagram: "",
     youtube: "",
     spotify: "",
+    gallery: "",
   });
 
   useEffect(() => {
@@ -42,6 +43,7 @@ export default function EditArtistPage({ params }: { params: Promise<{ id: strin
           instagram: data.instagram || "",
           youtube: data.youtube || "",
           spotify: data.spotify || "",
+          gallery: (data.gallery || []).join(", "),
         });
       } catch (err: any) {
         setError(err.message);
@@ -62,10 +64,15 @@ export default function EditArtistPage({ params }: { params: Promise<{ id: strin
     setError("");
 
     try {
+      const payload = {
+        ...formData,
+        gallery: formData.gallery.split(",").map((g) => g.trim()).filter(Boolean),
+      };
+
       const res = await fetch(`/api/artists/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) throw new Error("Failed to update artist");
@@ -155,6 +162,12 @@ export default function EditArtistPage({ params }: { params: Promise<{ id: strin
         <div style={{ marginBottom: "1.5rem" }}>
           <label style={labelStyle}>Profile Image URL *</label>
           <input name="profileImage" required value={formData.profileImage} onChange={handleChange} style={inputStyle} />
+        </div>
+
+        <div style={{ marginBottom: "2rem" }}>
+          <label style={labelStyle}>Gallery Images (comma-separated URLs)</label>
+          <textarea name="gallery" value={formData.gallery} onChange={handleChange} style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} placeholder="https://image1.jpg, https://image2.jpg" />
+          <p style={{ fontSize: "0.75rem", color: "#888", marginTop: "0.25rem" }}>Paste image URLs separated by commas.</p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.5rem", marginBottom: "2rem", padding: "1.5rem", background: "#f9f9f9", borderRadius: "8px", border: "1px solid #eee" }}>

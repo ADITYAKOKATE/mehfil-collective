@@ -22,6 +22,7 @@ export default function NewEventPage() {
     ticketType: "tickets",
     ticketLink: "",
     artists: "",
+    gallery: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -37,6 +38,7 @@ export default function NewEventPage() {
       const payload = {
         ...formData,
         artists: formData.artists.split(",").map((a) => a.trim()).filter(Boolean),
+        gallery: formData.gallery.split(",").map((g) => g.trim()).filter(Boolean),
       };
 
       const res = await fetch("/api/events", {
@@ -146,6 +148,12 @@ export default function NewEventPage() {
           <label style={labelStyle}>Artists (comma-separated slugs)</label>
           <input name="artists" value={formData.artists} onChange={handleChange} style={inputStyle} placeholder="e.g. arjun-sharma, meera-kapoor" />
           <p style={{ fontSize: "0.75rem", color: "#888", marginTop: "0.25rem" }}>Enter the slugs of the artists performing, separated by commas.</p>
+        </div>
+
+        <div style={{ marginBottom: "2rem" }}>
+          <label style={labelStyle}>Gallery Images (comma-separated URLs)</label>
+          <textarea name="gallery" value={formData.gallery} onChange={handleChange} style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} placeholder="https://image1.jpg, https://image2.jpg" />
+          <p style={{ fontSize: "0.75rem", color: "#888", marginTop: "0.25rem" }}>Paste image URLs separated by commas.</p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.5rem", marginBottom: "2rem", padding: "1.5rem", background: "#f9f9f9", borderRadius: "8px", border: "1px solid #eee" }}>
