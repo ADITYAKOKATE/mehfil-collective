@@ -1,6 +1,7 @@
 import ArtistCard from "@/components/ArtistCard";
 import connectToDatabase from "@/lib/db";
 import Artist from "@/models/Artist";
+import { getSiteSettings } from "@/lib/settings";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,10 +13,13 @@ export const revalidate = 60;
 
 export default async function ArtistsPage() {
   await connectToDatabase();
-  const dbArtists = await Artist.find().sort({ name: 1 });
-  
-  // Serialize for passing to potential client components inside, or just for clean rendering
+  const [dbArtists, settings] = await Promise.all([
+    Artist.find().sort({ name: 1 }),
+    getSiteSettings(),
+  ]);
+
   const artists = JSON.parse(JSON.stringify(dbArtists));
+  const s = JSON.parse(JSON.stringify(settings));
 
   return (
     <div style={{ background: "#080808", minHeight: "100vh", paddingTop: "80px" }}>
@@ -40,15 +44,15 @@ export default async function ArtistsPage() {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "1rem" }}>
             <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
             <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.68rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c9a84c", fontWeight: 600 }}>
-              The Performers
+              {s.artistsHeroLabel || "The Performers"}
             </span>
             <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
           </div>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.5rem, 6vw, 4.5rem)", fontWeight: 500, color: "#f0ece4", marginBottom: "1rem" }}>
-            Our Artists
+            {s.artistsHeroTitle || "Our Artists"}
           </h1>
           <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", color: "#888880", maxWidth: "500px", margin: "0 auto", lineHeight: 1.7 }}>
-            Extraordinary talent from across India, handpicked and presented by Mehfil Collective to create unforgettable live experiences.
+            {s.artistsHeroSubtitle || "Extraordinary talent from across India, handpicked and presented by Mehfil Collective to create unforgettable live experiences."}
           </p>
         </div>
       </div>
@@ -84,10 +88,10 @@ export default async function ArtistsPage() {
         }}
       >
         <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2rem", fontWeight: 500, color: "#f0ece4", marginBottom: "0.75rem" }}>
-          Are you an artist?
+          {s.artistsCtaTitle || "Are you an artist?"}
         </h2>
         <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.95rem", color: "#888880", marginBottom: "2rem", lineHeight: 1.7, maxWidth: "450px", margin: "0 auto 2rem" }}>
-          Mehfil Collective is always looking for extraordinary talent. Reach out to us and let&apos;s create something together.
+          {s.artistsCtaSubtitle || "Mehfil Collective is always looking for extraordinary talent. Reach out to us and let's create something together."}
         </p>
         <a
           href="/collaborate"

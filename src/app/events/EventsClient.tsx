@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Search, Filter } from "lucide-react";
 import EventCard from "@/components/EventCard";
 
-export default function EventsClient({ initialEvents }: { initialEvents: any[] }) {
+export default function EventsClient({ initialEvents, heroLabel, heroTitle, heroSubtitle }: { initialEvents: any[], heroLabel?: string, heroTitle?: string, heroSubtitle?: string }) {
   const cities = ["All Cities", ...Array.from(new Set(initialEvents.map((e) => e.city)))];
   const categories = ["All Categories", ...Array.from(new Set(initialEvents.map((e) => e.category)))];
 
@@ -48,15 +48,15 @@ export default function EventsClient({ initialEvents }: { initialEvents: any[] }
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "1rem" }}>
             <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
             <span style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.68rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "#c9a84c", fontWeight: 600 }}>
-              All Events
+              {heroLabel || "All Events"}
             </span>
             <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
           </div>
           <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.5rem, 6vw, 4.5rem)", fontWeight: 500, color: "#f0ece4", marginBottom: "1rem" }}>
-            Discover Events
+            {heroTitle || "Discover Events"}
           </h1>
           <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1rem", color: "#888880", maxWidth: "500px", margin: "0 auto", lineHeight: 1.7 }}>
-            Live music, cultural gatherings, Sufi evenings, Bollywood nights and more — curated across India.
+            {heroSubtitle || "Live music, cultural gatherings, Sufi evenings, Bollywood nights and more — curated across India."}
           </p>
         </div>
       </div>

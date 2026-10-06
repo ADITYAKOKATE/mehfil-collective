@@ -50,7 +50,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function HomePageClient({ upcomingEvents, featuredArtists, pastEvents, instagramUrl, whatsappNumber, whatsappEnabled }: { upcomingEvents: any[], featuredArtists: any[], pastEvents: any[], instagramUrl?: string, whatsappNumber?: string, whatsappEnabled?: boolean }) {
+export default function HomePageClient({ upcomingEvents, featuredArtists, pastEvents, settings = {}, instagramUrl, whatsappNumber, whatsappEnabled }: { upcomingEvents: any[], featuredArtists: any[], pastEvents: any[], settings?: any, instagramUrl?: string, whatsappNumber?: string, whatsappEnabled?: boolean }) {
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -90,7 +90,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
           }}
         >
           <img
-            src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1800&q=85"
+            src={settings.homeHeroBgImage || "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1800&q=85"}
             alt="Live performance at Mehfil Collective"
             style={{
               width: "100%",
@@ -145,7 +145,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
                 fontWeight: 500,
               }}
             >
-              Live Entertainment & Cultural Events
+              {settings.homeHeroEyebrow || "Live Entertainment & Cultural Events"}
             </span>
             <div style={{ width: "40px", height: "1px", background: "#c9a84c" }} />
           </div>
@@ -204,7 +204,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
               transition: "all 0.8s ease 0.65s",
             }}
           >
-            Where Music Meets People.
+            {settings.homeHeroSubtitle || "Where Music Meets People."}
           </p>
 
           {/* CTAs */}
@@ -326,8 +326,8 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
           }}
         >
           <div>
-            <SectionLabel>What&apos;s Happening</SectionLabel>
-            <SectionTitle>Upcoming Events</SectionTitle>
+            <SectionLabel>{settings.homeUpcomingLabel || "What's Happening"}</SectionLabel>
+            <SectionTitle>{settings.homeUpcomingTitle || "Upcoming Events"}</SectionTitle>
             <p
               style={{
                 fontFamily: "'Outfit', sans-serif",
@@ -337,7 +337,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
                 lineHeight: 1.7,
               }}
             >
-              Carefully curated live experiences across India. Find the ones that speak to your soul.
+              {settings.homeUpcomingSubtitle || "Carefully curated live experiences across India. Find the ones that speak to your soul."}
             </p>
           </div>
           <Link
@@ -438,18 +438,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
               marginBottom: "1.5rem",
             }}
           >
-            Mehfil Collective is not just selling events.{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, #c9a84c, #e8cc7a)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              It is creating experiences
-            </span>{" "}
-            around music, culture, artists and people.
+            {settings.homePhilosophyQuote || "Mehfil Collective is not just selling events. It is creating experiences around music, culture, artists and people."}
           </p>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem" }}>
             <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
@@ -462,7 +451,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
                 color: "#888880",
               }}
             >
-              Our Philosophy
+              {settings.homePhilosophyLabel || "Our Philosophy"}
             </span>
             <div style={{ width: "30px", height: "1px", background: "#c9a84c" }} />
           </div>
@@ -482,8 +471,8 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
           }}
         >
           <div>
-            <SectionLabel>The Performers</SectionLabel>
-            <SectionTitle>Featured Artists</SectionTitle>
+            <SectionLabel>{settings.homeArtistsLabel || "The Performers"}</SectionLabel>
+            <SectionTitle>{settings.homeArtistsTitle || "Featured Artists"}</SectionTitle>
             <p
               style={{
                 fontFamily: "'Outfit', sans-serif",
@@ -493,7 +482,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
                 lineHeight: 1.7,
               }}
             >
-              Extraordinary talent from across India, handpicked by Mehfil Collective.
+              {settings.homeArtistsSubtitle || "Extraordinary talent from across India, handpicked by Mehfil Collective."}
             </p>
           </div>
           <Link
@@ -541,8 +530,8 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
       >
         <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <SectionLabel>Our Expertise</SectionLabel>
-            <SectionTitle>What We Create</SectionTitle>
+            <SectionLabel>{settings.homeServicesLabel || "Our Expertise"}</SectionLabel>
+            <SectionTitle>{settings.homeServicesTitle || "What We Create"}</SectionTitle>
           </div>
           <div
             style={{
@@ -568,8 +557,8 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
       {/* ─── PAST EVENTS ───────────────────────────────────────────────────────── */}
       <section style={{ padding: "6rem 2rem", maxWidth: "1400px", margin: "0 auto" }}>
         <div style={{ marginBottom: "3.5rem" }}>
-          <SectionLabel>The Archive</SectionLabel>
-          <SectionTitle>Past Events</SectionTitle>
+          <SectionLabel>{settings.homePastLabel || "The Archive"}</SectionLabel>
+          <SectionTitle>{settings.homePastTitle || "Past Events"}</SectionTitle>
           <p
             style={{
               fontFamily: "'Outfit', sans-serif",
@@ -579,7 +568,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
               lineHeight: 1.7,
             }}
           >
-            A look at some of the memorable evenings we have had the privilege of creating.
+            {settings.homePastSubtitle || "A look at some of the memorable evenings we have had the privilege of creating."}
           </p>
         </div>
         <div
@@ -605,7 +594,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
         }}
       >
         <div style={{ maxWidth: "700px", margin: "0 auto" }}>
-          <SectionLabel>Follow The Mehfil</SectionLabel>
+          <SectionLabel>{settings.homeInstagramLabel || "Follow The Mehfil"}</SectionLabel>
           <h2
             style={{
               fontFamily: "'Cormorant Garamond', serif",
@@ -615,7 +604,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
               marginBottom: "1rem",
             }}
           >
-            Join Our Community
+            {settings.homeInstagramTitle || "Join Our Community"}
           </h2>
           <p
             style={{
@@ -626,7 +615,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
               marginBottom: "2.5rem",
             }}
           >
-            Stay updated with our latest events, behind-the-scenes moments and artist stories. Follow us on Instagram for the full Mehfil experience.
+            {settings.homeInstagramSubtitle || "Stay updated with our latest events, behind-the-scenes moments and artist stories. Follow us on Instagram for the full Mehfil experience."}
           </p>
           <a
             href={instagramUrl || "https://instagram.com/mehfilcollective"}
@@ -678,7 +667,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
         }}
       >
         <img
-          src="https://images.unsplash.com/photo-1501386761578-eaa54b4e3bcd?w=1800&q=80"
+          src={settings.homeLetsConnectBgImage || "https://images.unsplash.com/photo-1501386761578-eaa54b4e3bcd?w=1800&q=80"}
           alt=""
           aria-hidden
           style={{
@@ -709,7 +698,7 @@ export default function HomePageClient({ upcomingEvents, featuredArtists, pastEv
               marginBottom: "1rem",
             }}
           >
-            Have an event in mind?
+            {settings.homeLetsConnectTitle || "Have an event in mind?"}
           </h2>
           <p
             style={{

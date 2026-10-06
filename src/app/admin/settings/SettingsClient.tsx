@@ -6,6 +6,7 @@ import { Save, Globe, Home, Info, Phone, Briefcase, Loader, Image } from "lucide
 const tabs = [
   { id: "homepage", label: "Homepage", icon: Home },
   { id: "about", label: "About Page", icon: Info },
+  { id: "pages", label: "Pages & Headers", icon: Briefcase },
   { id: "services", label: "Services", icon: Briefcase },
   { id: "contact", label: "Contact Info", icon: Phone },
   { id: "social", label: "Social Media", icon: Globe },
@@ -251,58 +252,174 @@ export default function SettingsClient() {
       {/* Tab: Homepage */}
       {activeTab === "homepage" && (
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", maxWidth: "800px" }}>
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666", marginBottom: "0" }}>Hero Section</p>
+          <div>
+            <label style={labelStyle}>Hero Background Image URL</label>
+            <input name="homeHeroBgImage" value={form.homeHeroBgImage || ""} onChange={handleChange} style={inputStyle} placeholder="https://..." />
+          </div>
+          <div>
+            <label style={labelStyle}>Hero Eyebrow Text (small text above title)</label>
+            <input name="homeHeroEyebrow" value={form.homeHeroEyebrow || ""} onChange={handleChange} style={inputStyle} placeholder="Live Entertainment & Cultural Events" />
+          </div>
           <div>
             <label style={labelStyle}>Hero Title (large heading)</label>
             <input name="homeHeroTitle" value={form.homeHeroTitle || ""} onChange={handleChange} style={inputStyle} placeholder="MEHFIL COLLECTIVE" />
           </div>
           <div>
-            <label style={labelStyle}>Hero Subtitle (below title)</label>
+            <label style={labelStyle}>Hero Tagline (italic text below title)</label>
             <input name="homeHeroSubtitle" value={form.homeHeroSubtitle || ""} onChange={handleChange} style={inputStyle} placeholder="Where Music Meets People." />
-          </div>
-          <div>
-            <label style={labelStyle}>Hero Description (short paragraph)</label>
-            <textarea name="homeHeroDescription" value={form.homeHeroDescription || ""} onChange={handleChange} style={textareaStyle} placeholder="Creating Moments. Curating Experiences..." />
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
             <div>
-              <label style={labelStyle}>Primary CTA Button Text</label>
+              <label style={labelStyle}>Primary CTA Button</label>
               <input name="homeHeroCtaPrimary" value={form.homeHeroCtaPrimary || ""} onChange={handleChange} style={inputStyle} placeholder="Explore Events" />
             </div>
             <div>
-              <label style={labelStyle}>Secondary CTA Button Text</label>
+              <label style={labelStyle}>Secondary CTA Button</label>
               <input name="homeHeroCtaSecondary" value={form.homeHeroCtaSecondary || ""} onChange={handleChange} style={inputStyle} placeholder="Work With Us" />
             </div>
           </div>
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Upcoming Events Section</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Label (gold small text)</label><input name="homeUpcomingLabel" value={form.homeUpcomingLabel || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Title (h2)</label><input name="homeUpcomingTitle" value={form.homeUpcomingTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          </div>
+          <div><label style={labelStyle}>Subtitle</label><input name="homeUpcomingSubtitle" value={form.homeUpcomingSubtitle || ""} onChange={handleChange} style={inputStyle} /></div>
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Philosophy Banner Section</p>
+          <div><label style={labelStyle}>Philosophy Quote</label><textarea name="homePhilosophyQuote" value={form.homePhilosophyQuote || ""} onChange={handleChange} style={textareaStyle} /></div>
+          <div><label style={labelStyle}>Philosophy Label</label><input name="homePhilosophyLabel" value={form.homePhilosophyLabel || ""} onChange={handleChange} style={inputStyle} /></div>
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Featured Artists Section</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Label</label><input name="homeArtistsLabel" value={form.homeArtistsLabel || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Title</label><input name="homeArtistsTitle" value={form.homeArtistsTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          </div>
+          <div><label style={labelStyle}>Subtitle</label><input name="homeArtistsSubtitle" value={form.homeArtistsSubtitle || ""} onChange={handleChange} style={inputStyle} /></div>
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Services Section</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Label</label><input name="homeServicesLabel" value={form.homeServicesLabel || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Title</label><input name="homeServicesTitle" value={form.homeServicesTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          </div>
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Past Events Section</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Label</label><input name="homePastLabel" value={form.homePastLabel || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Title</label><input name="homePastTitle" value={form.homePastTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          </div>
+          <div><label style={labelStyle}>Subtitle</label><input name="homePastSubtitle" value={form.homePastSubtitle || ""} onChange={handleChange} style={inputStyle} /></div>
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Instagram Section</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Label</label><input name="homeInstagramLabel" value={form.homeInstagramLabel || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Title</label><input name="homeInstagramTitle" value={form.homeInstagramTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          </div>
+          <div><label style={labelStyle}>Subtitle</label><textarea name="homeInstagramSubtitle" value={form.homeInstagramSubtitle || ""} onChange={handleChange} style={textareaStyle} /></div>
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>"Let's Connect" CTA Section</p>
+          <div><label style={labelStyle}>Background Image URL</label><input name="homeLetsConnectBgImage" value={form.homeLetsConnectBgImage || ""} onChange={handleChange} style={inputStyle} placeholder="https://..." /></div>
+          <div><label style={labelStyle}>Title</label><input name="homeLetsConnectTitle" value={form.homeLetsConnectTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          <div><label style={labelStyle}>Subtitle</label><textarea name="homeLetsConnectSubtitle" value={form.homeLetsConnectSubtitle || ""} onChange={handleChange} style={textareaStyle} /></div>
         </div>
       )}
 
       {/* Tab: About Page */}
       {activeTab === "about" && (
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", maxWidth: "800px" }}>
-          <div>
-            <label style={labelStyle}>Who We Are — Section Title</label>
-            <input name="aboutWhoWeAreTitle" value={form.aboutWhoWeAreTitle || ""} onChange={handleChange} style={inputStyle} placeholder="Who We Are" />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Hero Banner</p>
+          <div><label style={labelStyle}>Hero Background Image URL</label><input name="aboutHeroBgImage" value={form.aboutHeroBgImage || ""} onChange={handleChange} style={inputStyle} placeholder="https://..." /></div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Hero Label</label><input name="aboutHeroLabel" value={form.aboutHeroLabel || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Hero Title (H1)</label><input name="aboutHeroTitle" value={form.aboutHeroTitle || ""} onChange={handleChange} style={inputStyle} /></div>
           </div>
-          <div>
-            <label style={labelStyle}>Who We Are — Body Text</label>
-            <textarea name="aboutWhoWeAreText" value={form.aboutWhoWeAreText || ""} onChange={handleChange} style={{ ...textareaStyle, minHeight: "160px" }} />
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Who We Are Section</p>
+          <div><label style={labelStyle}>Section Label</label><input name="aboutWhoWeAreTitle" value={form.aboutWhoWeAreTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          <div><label style={labelStyle}>Section Subtitle (H2)</label><input name="aboutWhoWeAreSubtitle" value={form.aboutWhoWeAreSubtitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          <div><label style={labelStyle}>Body Text</label><textarea name="aboutWhoWeAreText" value={form.aboutWhoWeAreText || ""} onChange={handleChange} style={{ ...textareaStyle, minHeight: "120px" }} /></div>
+          <div><label style={labelStyle}>Side Image URL</label><input name="aboutWhoWeAreImage" value={form.aboutWhoWeAreImage || ""} onChange={handleChange} style={inputStyle} placeholder="https://..." /></div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Overlay Stat Number (e.g. 50+)</label><input name="aboutWhoWeAreStat" value={form.aboutWhoWeAreStat || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Overlay Stat Label</label><input name="aboutWhoWeAreStatLabel" value={form.aboutWhoWeAreStatLabel || ""} onChange={handleChange} style={inputStyle} /></div>
           </div>
-          <div>
-            <label style={labelStyle}>Philosophy — Section Title</label>
-            <input name="aboutPhilosophyTitle" value={form.aboutPhilosophyTitle || ""} onChange={handleChange} style={inputStyle} placeholder="Our Philosophy" />
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Philosophy Section</p>
+          <div><label style={labelStyle}>Section Label</label><input name="aboutPhilosophyTitle" value={form.aboutPhilosophyTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          <div><label style={labelStyle}>Section Subtitle (H2)</label><input name="aboutPhilosophySubtitle" value={form.aboutPhilosophySubtitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          <div><label style={labelStyle}>Body Text</label><textarea name="aboutPhilosophyText" value={form.aboutPhilosophyText || ""} onChange={handleChange} style={{ ...textareaStyle, minHeight: "120px" }} /></div>
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Stats Section (4 numbers)</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Stat 1 Number</label><input name="aboutStat1Number" value={form.aboutStat1Number || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Stat 1 Label</label><input name="aboutStat1Label" value={form.aboutStat1Label || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Stat 2 Number</label><input name="aboutStat2Number" value={form.aboutStat2Number || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Stat 2 Label</label><input name="aboutStat2Label" value={form.aboutStat2Label || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Stat 3 Number</label><input name="aboutStat3Number" value={form.aboutStat3Number || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Stat 3 Label</label><input name="aboutStat3Label" value={form.aboutStat3Label || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Stat 4 Number</label><input name="aboutStat4Number" value={form.aboutStat4Number || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Stat 4 Label</label><input name="aboutStat4Label" value={form.aboutStat4Label || ""} onChange={handleChange} style={inputStyle} /></div>
           </div>
-          <div>
-            <label style={labelStyle}>Philosophy — Body Text</label>
-            <textarea name="aboutPhilosophyText" value={form.aboutPhilosophyText || ""} onChange={handleChange} style={{ ...textareaStyle, minHeight: "160px" }} />
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Services Section Header</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Label</label><input name="aboutServicesLabel" value={form.aboutServicesLabel || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Title</label><input name="aboutServicesTitle" value={form.aboutServicesTitle || ""} onChange={handleChange} style={inputStyle} /></div>
           </div>
-          <div>
-            <label style={labelStyle}>Collaborate Page — Main Title</label>
-            <input name="collaborateTitle" value={form.collaborateTitle || ""} onChange={handleChange} style={inputStyle} placeholder="Let's Create Something Together." />
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>CTA Section at Bottom</p>
+          <div><label style={labelStyle}>CTA Title</label><input name="aboutCtaTitle" value={form.aboutCtaTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          <div><label style={labelStyle}>CTA Subtitle</label><textarea name="aboutCtaSubtitle" value={form.aboutCtaSubtitle || ""} onChange={handleChange} style={textareaStyle} /></div>
+        </div>
+      )}
+
+      {/* Tab: Pages & Headers */}
+      {activeTab === "pages" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", maxWidth: "800px" }}>
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Events Page</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Label</label><input name="eventsHeroLabel" value={form.eventsHeroLabel || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Title (H1)</label><input name="eventsHeroTitle" value={form.eventsHeroTitle || ""} onChange={handleChange} style={inputStyle} /></div>
           </div>
-          <div>
-            <label style={labelStyle}>Collaborate Page — Subtitle</label>
-            <textarea name="collaborateSubtitle" value={form.collaborateSubtitle || ""} onChange={handleChange} style={textareaStyle} />
+          <div><label style={labelStyle}>Subtitle</label><textarea name="eventsHeroSubtitle" value={form.eventsHeroSubtitle || ""} onChange={handleChange} style={textareaStyle} /></div>
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Artists Page</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Label</label><input name="artistsHeroLabel" value={form.artistsHeroLabel || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Title (H1)</label><input name="artistsHeroTitle" value={form.artistsHeroTitle || ""} onChange={handleChange} style={inputStyle} /></div>
           </div>
+          <div><label style={labelStyle}>Subtitle</label><textarea name="artistsHeroSubtitle" value={form.artistsHeroSubtitle || ""} onChange={handleChange} style={textareaStyle} /></div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>CTA Title ("Are you an artist?")</label><input name="artistsCtaTitle" value={form.artistsCtaTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>CTA Subtitle</label><input name="artistsCtaSubtitle" value={form.artistsCtaSubtitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          </div>
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Gallery Page</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div><label style={labelStyle}>Label</label><input name="galleryHeroLabel" value={form.galleryHeroLabel || ""} onChange={handleChange} style={inputStyle} /></div>
+            <div><label style={labelStyle}>Title (H1)</label><input name="galleryHeroTitle" value={form.galleryHeroTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          </div>
+          <div><label style={labelStyle}>Subtitle</label><textarea name="galleryHeroSubtitle" value={form.galleryHeroSubtitle || ""} onChange={handleChange} style={textareaStyle} /></div>
+
+          <hr style={{ border: "none", borderTop: "1px solid #eee", margin: "0.5rem 0" }} />
+          <p style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", color: "#666" }}>Collaborate Page</p>
+          <div><label style={labelStyle}>Main Title</label><input name="collaborateTitle" value={form.collaborateTitle || ""} onChange={handleChange} style={inputStyle} /></div>
+          <div><label style={labelStyle}>Subtitle</label><textarea name="collaborateSubtitle" value={form.collaborateSubtitle || ""} onChange={handleChange} style={textareaStyle} /></div>
         </div>
       )}
 
