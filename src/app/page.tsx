@@ -35,6 +35,8 @@ export default async function HomePage() {
       featuredArtists={serializedArtists}
       pastEvents={serializedPast}
       instagramUrl={instagramUrl}
+      whatsappNumber={settings.whatsappNumber}
+      whatsappEnabled={settings.whatsappEnabled !== false}
     />
   );
 }
