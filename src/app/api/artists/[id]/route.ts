@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import connectToDatabase from "@/lib/db";
 import Artist from "@/models/Artist";
+import { revalidatePath } from "next/cache";
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -30,6 +31,10 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     const updatedArtist = await Artist.findByIdAndUpdate(id, body, { new: true, runValidators: true });
     if (!updatedArtist) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
+    revalidatePath("/");
+    revalidatePath("/artists");
+    revalidatePath(`/artists/${updatedArtist.slug}`);
+
     return NextResponse.json(updatedArtist);
   } catch (error) {
     return NextResponse.json({ error: "Failed to update artist" }, { status: 500 });
@@ -48,6 +53,10 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
 
     const deletedArtist = await Artist.findByIdAndDelete(id);
     if (!deletedArtist) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    revalidatePath("/");
+    revalidatePath("/artists");
+    revalidatePath(`/artists/${deletedArtist.slug}`);
 
     return NextResponse.json({ success: true });
   } catch (error) {

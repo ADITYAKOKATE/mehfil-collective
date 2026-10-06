@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import connectToDatabase from "@/lib/db";
 import Event from "@/models/Event";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -30,6 +31,10 @@ export async function POST(req: Request) {
     }
 
     const newEvent = await Event.create(body);
+    
+    revalidatePath("/");
+    revalidatePath("/events");
+
     return NextResponse.json(newEvent, { status: 201 });
   } catch (error: any) {
     console.error("API POST /events ERROR:", error);

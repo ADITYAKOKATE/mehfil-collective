@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import connectToDatabase from "@/lib/db";
 import Event from "@/models/Event";
+import { revalidatePath } from "next/cache";
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -30,6 +31,10 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     const updatedEvent = await Event.findByIdAndUpdate(id, body, { new: true, runValidators: true });
     if (!updatedEvent) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
+    revalidatePath("/");
+    revalidatePath("/events");
+    revalidatePath(`/events/${updatedEvent.slug}`);
+
     return NextResponse.json(updatedEvent);
   } catch (error) {
     return NextResponse.json({ error: "Failed to update event" }, { status: 500 });
@@ -48,6 +53,10 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
 
     const deletedEvent = await Event.findByIdAndDelete(id);
     if (!deletedEvent) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    revalidatePath("/");
+    revalidatePath("/events");
+    revalidatePath(`/events/${deletedEvent.slug}`);
 
     return NextResponse.json({ success: true });
   } catch (error) {

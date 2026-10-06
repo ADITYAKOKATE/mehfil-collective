@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import connectToDatabase from "@/lib/db";
 import Artist from "@/models/Artist";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -30,6 +31,10 @@ export async function POST(req: Request) {
     }
 
     const newArtist = await Artist.create(body);
+    
+    revalidatePath("/");
+    revalidatePath("/artists");
+
     return NextResponse.json(newArtist, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: "Failed to create artist" }, { status: 500 });
