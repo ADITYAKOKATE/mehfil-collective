@@ -40,9 +40,9 @@ export default function EditArtistPage({ params }: { params: Promise<{ id: strin
           category: data.category || "Singer",
           performanceType: data.performanceType || "Solo",
           profileImage: data.profileImage || "",
-          instagram: data.instagram || "",
-          youtube: data.youtube || "",
-          spotify: data.spotify || "",
+          instagram: data.socialLinks?.instagram || "",
+          youtube: data.socialLinks?.youtube || "",
+          spotify: data.socialLinks?.spotify || "",
           gallery: (data.gallery || []).join(", "),
         });
       } catch (err: any) {
@@ -66,6 +66,11 @@ export default function EditArtistPage({ params }: { params: Promise<{ id: strin
     try {
       const payload = {
         ...formData,
+        socialLinks: {
+          instagram: formData.instagram,
+          youtube: formData.youtube,
+          spotify: formData.spotify,
+        },
         gallery: formData.gallery.split(",").map((g) => g.trim()).filter(Boolean),
       };
 

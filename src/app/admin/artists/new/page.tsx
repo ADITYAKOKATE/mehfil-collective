@@ -34,6 +34,11 @@ export default function NewArtistPage() {
     try {
       const payload = {
         ...formData,
+        socialLinks: {
+          instagram: formData.instagram,
+          youtube: formData.youtube,
+          spotify: formData.spotify,
+        },
         gallery: formData.gallery.split(",").map((g) => g.trim()).filter(Boolean),
       };
 

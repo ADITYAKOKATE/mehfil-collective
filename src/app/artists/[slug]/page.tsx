@@ -160,12 +160,14 @@ export default async function ArtistPage({ params }: Props) {
             </div>
           </div>
 
-          {Object.keys(artist!.socialLinks).length > 0 && (
+          {artist?.socialLinks && Object.values(artist.socialLinks).some((url) => !!url) && (
             <div style={{ background: "#111", border: "1px solid rgba(201,168,76,0.2)", padding: "1.8rem", marginBottom: "1.5rem" }}>
               <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: "0.68rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#c9a84c", marginBottom: "1.2rem", fontWeight: 600 }}>Follow & Listen</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                {Object.entries(artist!.socialLinks).map(([platform, url]) => (
-                  <a key={platform} href={url} target="_blank" rel="noopener noreferrer"
+                {Object.entries(artist.socialLinks)
+                  .filter(([_, url]) => !!url)
+                  .map(([platform, url]) => (
+                  <a key={platform} href={url as string} target="_blank" rel="noopener noreferrer"
                     style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: "#888880", textDecoration: "none", fontFamily: "'Outfit', sans-serif", fontSize: "0.85rem", textTransform: "capitalize", padding: "8px 0", borderBottom: "1px solid rgba(255,255,255,0.04)" }}
                     className="social-link-hover"
                   >
