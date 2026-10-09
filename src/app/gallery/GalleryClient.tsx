@@ -10,7 +10,19 @@ interface GalleryItem {
 
 export default function GalleryClient({ initialItems = [], heroLabel, heroTitle, heroSubtitle }: { initialItems: GalleryItem[], heroLabel?: string, heroTitle?: string, heroSubtitle?: string }) {
   const [selected, setSelected] = useState("All");
-  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<any>(null);
+
+  const renderMedia = (src: string, caption: string, inLightbox = false) => {
+    if (!src) return null;
+    if (src.includes("youtube.com") || src.includes("youtu.be")) {
+      const videoId = src.includes("v=") ? src.split("v=")[1]?.split("&")[0] : src.split("/").pop();
+      return <iframe style={{ width: "100%", height: inLightbox ? "60vh" : "auto", aspectRatio: "16/9", display: "block", border: "none" }} src={`https://www.youtube.com/embed/${videoId}`} allowFullScreen></iframe>;
+    }
+    if (src.match(/\.(mp4|webm)$/i)) {
+      return <video src={src} controls style={{ width: "100%", maxHeight: inLightbox ? "80vh" : "auto", display: "block" }} />;
+    }
+    return <img src={src} alt={caption} style={{ width: "100%", maxHeight: inLightbox ? "90vh" : "auto", objectFit: "contain", display: "block", transition: "transform 0.5s ease" }} />;
+  };
 
   // Compute categories dynamically based on the items provided
   const baseCategories = ["All"];
@@ -96,7 +108,11 @@ export default function GalleryClient({ initialItems = [], heroLabel, heroTitle,
         {filtered.map((item, i) => (
           <div
             key={i}
-            onClick={() => setLightbox(item.src)}
+            onClick={(e) => {
+              if ((e.target as HTMLElement).tagName !== "IFRAME" && (e.target as HTMLElement).tagName !== "VIDEO") {
+                setLightbox(item);
+              }
+            }}
             style={{
               marginBottom: "1rem",
               overflow: "hidden",
@@ -117,11 +133,7 @@ export default function GalleryClient({ initialItems = [], heroLabel, heroTitle,
               if (overlay) overlay.style.opacity = "0";
             }}
           >
-            <img
-              src={item.src}
-              alt={item.caption}
-              style={{ width: "100%", display: "block", transition: "transform 0.5s ease" }}
-            />
+            {renderMedia(item.src, item.caption)}
             <div
               className="gallery-overlay"
               style={{
@@ -163,15 +175,12 @@ export default function GalleryClient({ initialItems = [], heroLabel, heroTitle,
             padding: "2rem",
           }}
         >
-          <img
-            src={lightbox}
-            alt="Gallery"
-            style={{
-              maxWidth: "90vw",
-              maxHeight: "90vh",
-              objectFit: "contain",
-            }}
-          />
+          <div style={{ position: "relative", maxWidth: "90vw", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+            {renderMedia(lightbox.src, lightbox.caption, true)}
+            <div style={{ marginTop: "1.5rem", textAlign: "center", color: "#f0ece4", fontFamily: "'Outfit', sans-serif" }}>
+              {lightbox.caption}
+            </div>
+          </div>
           <button
             onClick={() => setLightbox(null)}
             style={{

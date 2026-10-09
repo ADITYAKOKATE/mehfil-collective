@@ -156,6 +156,29 @@ export default function SettingsClient() {
     setForm({ ...form, globalGallery: updated });
   };
 
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        handleGalleryChange(index, "src", data.url);
+      } else {
+        alert(data.error || "Upload failed");
+      }
+    } catch (err) {
+      alert("Upload failed");
+    }
+  };
+
   const handleSave = async () => {
     setSaving(true);
     setError("");
@@ -688,15 +711,22 @@ export default function SettingsClient() {
               <div key={index} style={{ display: "flex", gap: "1rem", padding: "1.5rem", border: "1px solid #eee", borderRadius: "8px", background: "#fafafa" }}>
                 <div style={{ width: "120px", height: "120px", background: "#eee", borderRadius: "4px", overflow: "hidden", flexShrink: 0 }}>
                   {img.src ? (
-                    <img src={img.src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    img.src.match(/\.(mp4|webm)$/i) || img.src.includes("youtube.com") || img.src.includes("youtu.be") ? (
+                      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", background: "#333", color: "#fff", fontSize: "0.75rem", fontFamily: "'Outfit', sans-serif" }}>Video</div>
+                    ) : (
+                      <img src={img.src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    )
                   ) : (
                     <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#aaa", fontSize: "0.75rem", fontFamily: "'Outfit', sans-serif" }}>No Image</div>
                   )}
                 </div>
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "1rem" }}>
                   <div>
-                    <label style={labelStyle}>Image URL *</label>
-                    <input value={img.src || ""} onChange={(e) => handleGalleryChange(index, "src", e.target.value)} style={inputStyle} placeholder="https://..." />
+                    <label style={labelStyle}>Media URL * (or upload from device)</label>
+                    <div style={{ display: "flex", gap: "0.5rem" }}>
+                      <input value={img.src || ""} onChange={(e) => handleGalleryChange(index, "src", e.target.value)} style={{ ...inputStyle, flex: 1 }} placeholder="https://... or upload ->" />
+                      <input type="file" accept="image/*,video/*" onChange={(e) => handleUpload(e, index)} style={{ width: "200px", fontSize: "0.8rem", fontFamily: "'Outfit', sans-serif" }} />
+                    </div>
                   </div>
                   <div style={{ display: "flex", gap: "1rem" }}>
                     <div style={{ flex: 1 }}>

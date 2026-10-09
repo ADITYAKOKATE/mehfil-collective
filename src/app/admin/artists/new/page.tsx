@@ -26,6 +26,35 @@ export default function NewArtistPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleUploadProfile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const data = new FormData();
+    data.append("file", file);
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: data });
+      const json = await res.json();
+      if (res.ok && json.url) setFormData((prev) => ({ ...prev, profileImage: json.url }));
+      else alert(json.error || "Upload failed");
+    } catch { alert("Upload failed"); }
+  };
+
+  const handleUploadGallery = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const data = new FormData();
+    data.append("file", file);
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: data });
+      const json = await res.json();
+      if (res.ok && json.url) {
+        const current = formData.gallery ? formData.gallery + ", " : "";
+        setFormData((prev) => ({ ...prev, gallery: current + json.url }));
+      }
+      else alert(json.error || "Upload failed");
+    } catch { alert("Upload failed"); }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -133,8 +162,11 @@ export default function NewArtistPage() {
         </div>
 
         <div style={{ marginBottom: "1.5rem" }}>
-          <label style={labelStyle}>Profile Image URL *</label>
-          <input name="profileImage" required value={formData.profileImage} onChange={handleChange} style={inputStyle} placeholder="https://..." />
+          <label style={labelStyle}>Profile Image URL * (or upload)</label>
+          <div style={{ display: "flex", gap: "0.5rem" }}>
+            <input name="profileImage" required value={formData.profileImage} onChange={handleChange} style={{ ...inputStyle, flex: 1 }} placeholder="https://..." />
+            <input type="file" accept="image/*" onChange={handleUploadProfile} style={{ width: "200px", fontSize: "0.8rem", fontFamily: "'Outfit', sans-serif" }} />
+          </div>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.5rem", marginBottom: "2rem", padding: "1.5rem", background: "#f9f9f9", borderRadius: "8px", border: "1px solid #eee" }}>
@@ -153,9 +185,10 @@ export default function NewArtistPage() {
         </div>
 
         <div style={{ marginBottom: "2rem" }}>
-          <label style={labelStyle}>Gallery Images (comma-separated URLs)</label>
-          <textarea name="gallery" value={formData.gallery} onChange={handleChange} style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }} placeholder="https://image1.jpg, https://image2.jpg" />
-          <p style={{ fontSize: "0.75rem", color: "#888", marginTop: "0.25rem" }}>Paste image URLs separated by commas.</p>
+          <label style={labelStyle}>Gallery Images/Videos (comma-separated URLs, or upload)</label>
+          <textarea name="gallery" value={formData.gallery} onChange={handleChange} style={{ ...inputStyle, minHeight: "80px", resize: "vertical", marginBottom: "0.5rem" }} placeholder="https://image1.jpg, https://video1.mp4" />
+          <input type="file" accept="image/*,video/*" onChange={handleUploadGallery} style={{ fontSize: "0.8rem", display: "block", fontFamily: "'Outfit', sans-serif" }} />
+          <p style={{ fontSize: "0.75rem", color: "#888", marginTop: "0.5rem" }}>Paste image/video URLs separated by commas, or upload a file directly.</p>
         </div>
 
         <button

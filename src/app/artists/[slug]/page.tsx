@@ -78,11 +78,15 @@ export default async function ArtistPage({ params }: Props) {
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 70%)" }} />
         <div style={{ position: "absolute", bottom: "3rem", left: "2rem", right: "2rem" }}>
           <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-            <Link href="/artists" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "#888880", textDecoration: "none", fontFamily: "'Outfit', sans-serif", fontSize: "0.78rem", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "1.5rem" }}>
-              <ArrowLeft size={14} /> All Artists
-            </Link>
-            <div style={{ display: "inline-block", padding: "4px 12px", background: "rgba(201,168,76,0.12)", border: "1px solid rgba(201,168,76,0.3)", fontFamily: "'Outfit', sans-serif", fontSize: "0.68rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#c9a84c", marginBottom: "1rem" }}>
-              {artist!.category}
+            <div style={{ marginBottom: "2rem" }}>
+              <Link href="/artists" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "#888880", textDecoration: "none", fontFamily: "'Outfit', sans-serif", fontSize: "0.8rem", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s ease" }} className="social-link-hover">
+                <ArrowLeft size={16} /> Back to Artists
+              </Link>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
+              <div style={{ padding: "6px 14px", background: "linear-gradient(135deg, rgba(201,168,76,0.15), rgba(232,204,122,0.05))", border: "1px solid rgba(201,168,76,0.4)", borderRadius: "4px", fontFamily: "'Outfit', sans-serif", fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#e8cc7a", fontWeight: 500 }}>
+                {artist!.category}
+              </div>
             </div>
             <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.5rem, 7vw, 4.5rem)", fontWeight: 600, color: "#f0ece4", lineHeight: 1.0, marginBottom: "0.5rem" }}>
               {artist!.name}
@@ -113,8 +117,14 @@ export default async function ArtistPage({ params }: Props) {
               <div style={{ width: "40px", height: "1px", background: "#c9a84c", marginBottom: "1.5rem" }} />
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "0.75rem" }}>
                 {artist!.gallery.map((img, i) => (
-                  <div key={i} style={{ aspectRatio: "4/3", overflow: "hidden" }} className="gallery-img-wrap">
-                    <img src={img} alt={`${artist!.name} ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.4s ease" }} className="gallery-hover-img" />
+                  <div key={i} style={{ aspectRatio: "4/3", overflow: "hidden", position: "relative" }} className="gallery-img-wrap">
+                    {img.includes("youtube.com") || img.includes("youtu.be") ? (
+                      <iframe style={{ width: "100%", height: "100%", border: "none" }} src={`https://www.youtube.com/embed/${img.includes("v=") ? img.split("v=")[1]?.split("&")[0] : img.split("/").pop()}`} allowFullScreen />
+                    ) : img.match(/\.(mp4|webm)$/i) ? (
+                      <video src={img} controls style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    ) : (
+                      <img src={img} alt={`${artist!.name} ${i + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.4s ease" }} className="gallery-hover-img" />
+                    )}
                   </div>
                 ))}
               </div>
